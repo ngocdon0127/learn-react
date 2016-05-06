@@ -24,12 +24,39 @@
 			// To get started with this tutorial running your own code, simply remove
 			// the script tag loading scripts/example.js and start writing code here.
 			var CommentForm = React.createClass({
+				addComment: function () {
+					var name = ob('name').value;
+					var comment = ob('comment').value;
+					$.ajax({
+						url: '/api/comments',
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							author: name,
+							text: comment,
+						}
+					})
+				},
+				deleteAllComments: function () {
+					console.log('start ajax');
+					$.ajax({
+						url: '/api/delete',
+						type: 'GET',
+						success: function () {
+							console.log('success');
+						},
+						error: function () {
+							console.log('error');
+						}
+					});
+				},
 				render: function () {
 					return (
 						<form>
 							<input type="text" id="name" name="name" />
 							<input type="text" id="comment" name="comment" />
-							<input type="submit" value="Comment"/>
+							<input type="button" value="Comment" onClick={this.addComment}/>
+							<input type="button" value="Delete" onClick={this.deleteAllComments}/>
 						</form>
 					)
 				}
@@ -52,8 +79,26 @@
 						comments: []
 					}
 				},
+				componentDidMount: function () {
+					this.updateComments();
+					setInterval(this.updateComments, 10000);
+				},
+				updateComments: function () {
+					var t = this;
+					$.ajax({
+						url: '/api/comments',
+						type: 'GET',
+						dataType: 'json',
+						cache: false,
+						success: function (data) {
+							t.setState({
+								comments: data
+							});
+						}.bind(this)
+					});
+				},
 				render: function () {
-					console.log(CommentList);
+					this.updateComments();
 					var db = this.state.comments;
 					var cmtArr = db.map(function (val, index) {
 						return <Comment author={val.author} comment={val.text} key={val.id}/>

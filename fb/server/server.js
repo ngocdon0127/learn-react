@@ -46,6 +46,12 @@ app.get('/api/comments', function(req, res) {
   });
 });
 
+app.get('/api/delete', function (request, response) {
+  fs.writeFile(COMMENTS_FILE, JSON.stringify([]), function (err) {
+    response.end();
+  })
+})
+
 app.post('/api/comments', function(req, res) {
   fs.readFile(COMMENTS_FILE, function(err, data) {
     if (err) {
