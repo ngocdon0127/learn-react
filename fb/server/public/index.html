@@ -74,6 +74,29 @@
 			});
 
 			var CommentList = React.createClass({
+				render: function () {
+					var db = this.props.data;
+					var cmtArr = db.map(function (val, index) {
+						return <Comment author={val.author} comment={val.text} key={val.id}/>
+					});
+					return (
+						<div className="commentList">
+							{cmtArr}
+						</div>
+					);
+				}
+			})
+
+			var CommentBox = React.createClass({
+				render: function () {
+					return (
+						<div className="commentBox">
+							<h1>Comments</h1>
+							<CommentList data={this.state.comments}/>
+							<CommentForm />
+						</div>
+					)
+				},
 				getInitialState: function  () {
 					return {
 						comments: []
@@ -91,36 +114,15 @@
 						dataType: 'json',
 						cache: false,
 						success: function (data) {
-							t.setState({
+							// t.setState({
+							// 	comments: data
+							// });
+							this.setState({
 								comments: data
 							});
 						}.bind(this)
 					});
 				},
-				render: function () {
-					this.updateComments();
-					var db = this.state.comments;
-					var cmtArr = db.map(function (val, index) {
-						return <Comment author={val.author} comment={val.text} key={val.id}/>
-					});
-					return (
-						<div className="commentList">
-							{cmtArr}
-						</div>
-					);
-				}
-			})
-
-			var CommentBox = React.createClass({
-				render: function () {
-					return (
-						<div className="commentBox">
-							<h1>Comments</h1>
-							<CommentList />
-							<CommentForm />
-						</div>
-					)
-				}
 			})
 
 			ReactDOM.render(<CommentBox />, ob('content'));

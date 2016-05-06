@@ -48,8 +48,13 @@ app.get('/api/comments', function(req, res) {
 
 app.get('/api/delete', function (request, response) {
   fs.writeFile(COMMENTS_FILE, JSON.stringify([]), function (err) {
+    if (err){
+      console.log(err);
+      process.exit(1);
+    }
+    response.write('hehe');
     response.end();
-  })
+  });
 })
 
 app.post('/api/comments', function(req, res) {
