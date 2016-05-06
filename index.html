@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- The core React library -->
+	<script src="https://fb.me/react-15.0.2.js"></script>
+	<!-- The ReactDOM Library -->
+	<script src="https://fb.me/react-dom-15.0.2.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+	<title>React Hello World</title>
+</head>
+<body>
+<div id="react">
+	
+</div>
+
+<div id="app"></div>
+
+<script type="text/babel">
+	var Form = React.createClass({
+		render: function () {
+			return (
+				<div>
+					<h3>{this.props.data}</h3>
+					<input type="submit" value={this.state.sData} onClick={this.clickHandler} onClick={this.props.extendedClickHandler}/>
+				</div>
+			);
+		},
+		getInitialState: function () {
+			return {
+				sData: "Don",
+				sStatus: true
+			}
+		},
+		clickHandler: function () {
+			console.log(this.state);
+			if (this.state.sStatus){
+				this.setState({
+					sData: "Nguyen Ngoc",
+					sStatus: !this.state.sStatus
+				})
+			}
+			else{
+				this.setState({
+					sData: "Don",
+					sStatus: !this.state.sStatus
+				})
+			}
+		}
+	});
+	var App = React.createClass({
+		render: function () {
+			return (
+				<div>
+					<h1>{this.state.title}</h1>
+					<Form data="hehe" extendedClickHandler={this.onClick}/>
+				</div>
+			);
+		},
+		getInitialState: function () {
+			return {
+				title: "Hello"
+			}
+		},
+		onClick: function () {
+			var title = this.state.title === "Hello" ? "World" : "Hello"
+			this.setState({
+				title: title
+			});
+		}
+
+	});
+
+	var str = "Hello";
+
+	ReactDOM.render(<App arg={str}/>, document.getElementById('react'));
+
+</script>
+</body>
+</html>

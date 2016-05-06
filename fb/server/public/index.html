@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>React Tutorial</title>
+		<!-- Not present in the tutorial. Just for basic styling. -->
+		<link rel="stylesheet" href="css/base.css" />
+		<script src="scripts/react.js"></script>
+		<!-- The ReactDOM Library -->
+		<script src="scripts/react-dom.js"></script>
+		<script src="scripts/browser.min.js"></script>
+		<script src="scripts/jquery.min.js"></script>
+		<script src="scripts/marked.min.js"></script>
+	</head>
+	<body>
+		<div id="content"></div>
+		<!-- <script type="text/babel" src="scripts/example.js"></script> -->
+		<script>
+			function ob (x) {
+				return document.getElementById(x);
+			}
+		</script>
+		<script type="text/babel">
+			// To get started with this tutorial running your own code, simply remove
+			// the script tag loading scripts/example.js and start writing code here.
+			var CommentForm = React.createClass({
+				render: function () {
+					return (
+						<form>
+							<input type="text" id="name" name="name" />
+							<input type="text" id="comment" name="comment" />
+							<input type="submit" value="Comment"/>
+						</form>
+					)
+				}
+			});
+
+			var Comment = React.createClass({
+				render: function () {
+					return (
+						<div className="comment">
+							<h2>{this.props.author}</h2>
+							<span><p>{this.props.comment}</p></span>
+						</div>
+					)
+				}
+			});
+
+			var CommentList = React.createClass({
+				getInitialState: function  () {
+					return {
+						comments: []
+					}
+				},
+				render: function () {
+					console.log(CommentList);
+					var db = this.state.comments;
+					var cmtArr = db.map(function (val, index) {
+						return <Comment author={val.author} comment={val.text} key={val.id}/>
+					});
+					return (
+						<div className="commentList">
+							{cmtArr}
+						</div>
+					);
+				}
+			})
+
+			var CommentBox = React.createClass({
+				render: function () {
+					return (
+						<div className="commentBox">
+							<h1>Comments</h1>
+							<CommentList />
+							<CommentForm />
+						</div>
+					)
+				}
+			})
+
+			ReactDOM.render(<CommentBox />, ob('content'));
+		</script>
+	</body>
+</html>

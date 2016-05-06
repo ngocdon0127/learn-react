@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<!-- The core React library -->
+	<script src="https://fb.me/react-15.0.2.js"></script>
+	<!-- The ReactDOM Library -->
+	<script src="https://fb.me/react-dom-15.0.2.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+	<title>React Hello World</title>
+</head>
+<body>
+<div id="app">
+	
+</div>
+
+<script type="text/babel">
+	function ob (x) {
+		return document.getElementById(x);
+	}
+	var App = React.createClass({
+		getInitialState: function () {
+			return {
+				comments: ['1', '2']
+			}
+		},
+		addCmt: function (cmt) {
+			var cmts = this.state.comments;
+			cmts.push(cmt);
+			this.setState({
+				comments: cmts
+			});
+		},
+		render: function () {
+			var comments = this.state.comments;
+			var lis = comments.map(function (val, index) {
+				return <li key={index}>{val}</li>
+			});
+			return (
+				<div>
+					<ul>
+						{lis}
+					</ul>
+					<Form func={this.addCmt} />
+				</div>
+			)
+		}
+	});
+	var Form = React.createClass({
+		clickHander: function () {
+			var cmt = ob('comment').value;
+			var addCmtFunc = this.props.func;
+			addCmtFunc(cmt);
+		},
+		render: function () {
+			return (
+				<div>
+					<input type="text" id="comment" />
+					<button onClick={this.clickHander}>Add</button>
+				</div>
+			)
+		}
+	})
+	ReactDOM.render(<App />, document.getElementById('app'));
+</script>
+</body>
+</html>
